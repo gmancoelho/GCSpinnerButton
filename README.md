@@ -20,19 +20,12 @@ I didn't make the library, I only migrated it to Swift 4 and fixed the migration
 
 Inpired by https://dribbble.com/shots/1945593-Login-Home-Screen
 
-# Demo
-![Demo GIF Animation](https://github.com/entotsu/TKSubmitTransition/blob/master/demo.gif "Demo GIF Animation")
-
-# Installation
-	use_frameworks!
-	pod 'TKSubmitTransitionSwift3'
-
 # Usage
 
 ## This is SubClass of UIButton
 
 ``` swift
-btn = TKTransitionSubmitButton(frame: CGRectMake(0, 0, 44, 44))
+btn = GCSpinnerButton(frame: CGRectMake(0, 0, 44, 44))
 ```
 
 
