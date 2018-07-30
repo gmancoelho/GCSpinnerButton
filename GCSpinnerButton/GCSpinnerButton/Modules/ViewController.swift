@@ -21,7 +21,22 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
+    configureButton()
   }
-
+  
+  // MARK: - Class Methods
+  
+  private func configureButton() {
+    btnSpinner.backgroundColor = UIColor.cyan
+  }
+  
+  // MARK: - Actions
+  
+  @IBAction func startIsPressed(_ sender: Any) {
+    btnSpinner.animate(2.2) {
+      
+    }
+  }
+  
 }
 

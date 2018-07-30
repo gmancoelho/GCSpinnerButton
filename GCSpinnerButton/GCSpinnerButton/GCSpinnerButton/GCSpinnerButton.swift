@@ -2,19 +2,22 @@ import Foundation
 import UIKit
 
 @IBDesignable
-open class GCSpinnerButton : UIButton, UIViewControllerTransitioningDelegate, CAAnimationDelegate {
+open class GCSpinnerButton : UIButton {
   
-  // MARK: - Properties
+  // MARK: - Spinner
   
-  lazy var spiner: SpinerLayer! = {
+  private lazy var spiner: SpinerLayer! = {
     let s = SpinerLayer(frame: self.frame)
     self.layer.addSublayer(s)
     return s
   }()
   
+  // MARK: - IBInspectable
+
   @IBInspectable open var spinnerColor: UIColor = UIColor.white {
     didSet {
       spiner.spinnerColor = spinnerColor
+      self.setTitleColor(spinnerColor, for: .normal)
     }
   }
   
@@ -40,30 +43,27 @@ open class GCSpinnerButton : UIButton, UIViewControllerTransitioningDelegate, CA
     }
   }
   
-  private func setBgColorForState(color: UIColor?, forState: UIControl.State){
-    if color != nil {
-      setBackgroundImage(UIImage.imageWithColor(color: color!), for: forState)
-      
-    } else {
-      setBackgroundImage(nil, for: forState)
-    }
-  }
-  
-  open var didEndFinishAnimation : (()->())? = nil
+  // MARK: - Properties
   
   let springGoEase = CAMediaTimingFunction(controlPoints: 0.45, -0.36, 0.44, 0.92)
   let shrinkCurve = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
   let expandCurve = CAMediaTimingFunction(controlPoints: 0.95, 0.02, 1, 0.05)
-  let shrinkDuration: CFTimeInterval  = 0.1
+  let shrinkDuration: CFTimeInterval  = 0.2
   
-  open var normalCornerRadius: CGFloat? = 0.0 {
+  open var normalCornerRadius: CGFloat = 4.0 {
     didSet {
-      self.layer.cornerRadius = normalCornerRadius!
+      self.layer.cornerRadius = normalCornerRadius
     }
   }
   
-  var cachedTitle: String?
+  private var cachedTitle: String?
+  private var cachedHeight: CGFloat?
+  private var cachedWidth: CGFloat?
+
+  // MARK: - Callback
   
+  open var didEndFinishAnimation : (()->())? = nil
+
   // MARK: - Init
   
   public override init(frame: CGRect) {
@@ -79,14 +79,47 @@ open class GCSpinnerButton : UIButton, UIViewControllerTransitioningDelegate, CA
   // MARK: - SetUp
   
   private func setup() {
+    
     self.clipsToBounds = true
     spiner.spinnerColor = spinnerColor
+    self.layer.cornerRadius = normalCornerRadius
+  }
+  // MARK: - Class Methods
+  
+  private func setBgColorForState(color: UIColor?, forState: UIControl.State){
+    if color != nil {
+      setBackgroundImage(UIImage.imageWithColor(color: color!), for: forState)
+      
+    } else {
+      setBackgroundImage(nil, for: forState)
+    }
   }
   
-  open func startLoadingAnimation() {
+  private func startFinishAnimation(_ delay: TimeInterval, completion:(()->())?) {
+    _ = Timer.schedule(delay: delay) { _ in
+      
+      self.didEndFinishAnimation = completion
+      self.spiner.stopAnimation()
+      self.returnToOriginalState()
+      
+    }
+  }
+  
+  private func setOriginalState() {
+    self.returnToOriginalState()
+    self.spiner.stopAnimation()
+  }
+  
+  private func startLoadingAnimation() {
+    
     self.isUserInteractionEnabled = false
     self.cachedTitle = title(for: UIControl.State())
+    
+    self.cachedWidth = self.frame.width
+    self.cachedHeight = self.frame.height
+    
     self.setTitle("", for: UIControl.State())
+    
     UIView.animate(withDuration: 0.1, animations: { () -> Void in
       self.layer.cornerRadius = self.frame.height / 2
     }, completion: { (done) -> Void in
@@ -98,51 +131,34 @@ open class GCSpinnerButton : UIButton, UIViewControllerTransitioningDelegate, CA
     
   }
   
-  open func startFinishAnimation(_ delay: TimeInterval, completion:(()->())?) {
-    _ = Timer.schedule(delay: delay) { _ in
-      self.didEndFinishAnimation = completion
-      self.spiner.stopAnimation()
-      self.returnToOriginalState()
+  private func returnToOriginalState() {
+    
+    UIView.animate(withDuration: 0.1, animations: { () -> Void in
       
-    }
+      self.spiner.stopAnimation()
+      self.expand()
+      self.layer.cornerRadius = self.normalCornerRadius
+      
+    }, completion: { (done) -> Void in
+      _ = Timer.schedule(delay: self.shrinkDuration - 0.25) { _ in
+        
+        self.setTitle(self.cachedTitle, for: UIControl.State())
+        self.isUserInteractionEnabled = true
+        self.layer.removeAllAnimations()
+      }
+    })
   }
+  
+  // MARK: - Animations
   
   open func animate(_ duration: TimeInterval, completion:(()->())?) {
     startLoadingAnimation()
     startFinishAnimation(duration, completion: completion)
   }
   
-  open func setOriginalState() {
-    self.returnToOriginalState()
-    self.spiner.stopAnimation()
-  }
-  
-  open func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-    let a = anim as! CABasicAnimation
-    if a.keyPath == "transform.scale" {
-      didEndFinishAnimation?()
-      _ = Timer.schedule(delay: 1) { _ in
-        self.returnToOriginalState()
-      }
-    }
-  }
-  
-  open func returnToOriginalState() {
-    
-    UIView.animate(withDuration: 0.1, animations: { () -> Void in
-      self.spiner.stopAnimation()
-      self.layer.removeAllAnimations()
-    }, completion: { (done) -> Void in
-      _ = Timer.schedule(delay: self.shrinkDuration - 0.25) { _ in
-        self.setTitle(self.cachedTitle, for: UIControl.State())
-        self.isUserInteractionEnabled = true
-      }
-    })
-  }
-  
   // MARK: - CAAnimations
   
-  func shrink() {
+  private func shrink() {
     let shrinkAnim = CABasicAnimation(keyPath: "bounds.size.width")
     shrinkAnim.fromValue = frame.width
     shrinkAnim.toValue = frame.height
@@ -153,16 +169,36 @@ open class GCSpinnerButton : UIButton, UIViewControllerTransitioningDelegate, CA
     layer.add(shrinkAnim, forKey: shrinkAnim.keyPath)
   }
   
-  func expand() {
-    let expandAnim = CABasicAnimation(keyPath: "transform.scale")
-    expandAnim.fromValue = 1.0
-    expandAnim.toValue = 26.0
+  private func expand() {
+    let expandAnim = CABasicAnimation(keyPath: "bounds.size.width")
+    expandAnim.fromValue = frame.width
+    expandAnim.toValue = cachedWidth
     expandAnim.timingFunction = expandCurve
     expandAnim.duration = 0.3
     expandAnim.delegate = self
     expandAnim.fillMode = CAMediaTimingFillMode.forwards
-    expandAnim.isRemovedOnCompletion = false
+    expandAnim.isRemovedOnCompletion = true
     layer.add(expandAnim, forKey: expandAnim.keyPath)
   }
   
 }
+
+// MARK: - Extensions
+
+extension GCSpinnerButton: CAAnimationDelegate {
+  
+  public func animationDidStop(_ anim: CAAnimation, finishe0d flag: Bool) {
+    let a = anim as! CABasicAnimation
+    if a.keyPath == "transform.scale" {
+      
+      didEndFinishAnimation?()
+      
+      _ = Timer.schedule(delay: 1) { _ in
+        self.returnToOriginalState()
+      }
+      
+    }
+  }
+}
+
+

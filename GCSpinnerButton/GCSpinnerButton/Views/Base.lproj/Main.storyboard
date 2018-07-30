@@ -24,6 +24,9 @@
                                     <constraint firstAttribute="height" constant="45" id="o1s-3x-YvI"/>
                                 </constraints>
                                 <state key="normal" title="Start!!"/>
+                                <connections>
+                                    <action selector="startIsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fxJ-pd-I0F"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
