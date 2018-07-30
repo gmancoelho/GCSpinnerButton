@@ -10,11 +10,18 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  // MARK: - Outlets
+  
+  @IBOutlet weak var btnSpinner: GCSpinnerButton!
+  
+  // MARK: - Properties
+  
+  // MARK: - Life Cycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
   }
-
 
 }
 

@@ -12,6 +12,11 @@
 		B9EAF76F210F734100EE3944 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9EAF76D210F734100EE3944 /* Main.storyboard */; };
 		B9EAF771210F734900EE3944 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9EAF770210F734900EE3944 /* Assets.xcassets */; };
 		B9EAF774210F734900EE3944 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9EAF772210F734900EE3944 /* LaunchScreen.storyboard */; };
+		B9EAF786210F74A100EE3944 /* FadeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EAF781210F74A000EE3944 /* FadeTransition.swift */; };
+		B9EAF787210F74A100EE3944 /* CGRect+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EAF782210F74A000EE3944 /* CGRect+Extension.swift */; };
+		B9EAF788210F74A100EE3944 /* SpinerLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EAF783210F74A000EE3944 /* SpinerLayer.swift */; };
+		B9EAF789210F74A100EE3944 /* GCSpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EAF784210F74A100EE3944 /* GCSpinnerButton.swift */; };
+		B9EAF78A210F74A100EE3944 /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EAF785210F74A100EE3944 /* Timer+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +27,11 @@
 		B9EAF770210F734900EE3944 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9EAF773210F734900EE3944 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B9EAF775210F734900EE3944 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9EAF781210F74A000EE3944 /* FadeTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeTransition.swift; sourceTree = "<group>"; };
+		B9EAF782210F74A000EE3944 /* CGRect+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Extension.swift"; sourceTree = "<group>"; };
+		B9EAF783210F74A000EE3944 /* SpinerLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinerLayer.swift; sourceTree = "<group>"; };
+		B9EAF784210F74A100EE3944 /* GCSpinnerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCSpinnerButton.swift; sourceTree = "<group>"; };
+		B9EAF785210F74A100EE3944 /* Timer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +76,10 @@
 		B9EAF77B210F735400EE3944 /* GCSpinnerButton */ = {
 			isa = PBXGroup;
 			children = (
+				B9EAF78B210F75A900EE3944 /* Extensions */,
+				B9EAF781210F74A000EE3944 /* FadeTransition.swift */,
+				B9EAF783210F74A000EE3944 /* SpinerLayer.swift */,
+				B9EAF784210F74A100EE3944 /* GCSpinnerButton.swift */,
 			);
 			path = GCSpinnerButton;
 			sourceTree = "<group>";
@@ -102,6 +116,15 @@
 				B9EAF770210F734900EE3944 /* Assets.xcassets */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		B9EAF78B210F75A900EE3944 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B9EAF782210F74A000EE3944 /* CGRect+Extension.swift */,
+				B9EAF785210F74A100EE3944 /* Timer+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +199,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9EAF76C210F734100EE3944 /* ViewController.swift in Sources */,
+				B9EAF786210F74A100EE3944 /* FadeTransition.swift in Sources */,
+				B9EAF789210F74A100EE3944 /* GCSpinnerButton.swift in Sources */,
+				B9EAF787210F74A100EE3944 /* CGRect+Extension.swift in Sources */,
+				B9EAF78A210F74A100EE3944 /* Timer+Extensions.swift in Sources */,
+				B9EAF788210F74A100EE3944 /* SpinerLayer.swift in Sources */,
 				B9EAF76A210F734100EE3944 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
