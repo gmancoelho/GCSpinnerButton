@@ -83,6 +83,8 @@ open class GCSpinnerButton : UIButton {
     self.clipsToBounds = true
     spiner.spinnerColor = spinnerColor
     self.layer.cornerRadius = normalCornerRadius
+    self.setTitleColor(spinnerColor, for: .normal)
+
   }
   // MARK: - Class Methods
   
